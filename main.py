@@ -1,14 +1,8 @@
 """
+TODO :
+Model the growth of the network under different condition
+(number of link betwenn node, link densification, node pattern,small worldness)
 
-un reseau
-
-une methode qui fais une simulation de connection entre 2 node donné
-
-une methode qui fais N simulation en appelant la fonction d'avant avec des node prise au hazard a chaque fois et compute la distribution de probabilité pour la latence et le débit
-
-une methode qui ajoute un lien au hazard entre deux node entre deux rayon donné (plus long que X et plus petit que Y
-
-un main ou faire des test
 """
 
 import networkx as nx
@@ -26,34 +20,34 @@ def AddNodePlusRandomLink(G):
     nodeList = list(G.nodes())
     G.add_node(str(n))
     n = len(G.nodes())
-    if n>1:
-        if n > MinimalLinkRule+1:
-            print("Adding a random number of link")
+    if n>1: # we need at least two node to create a link
+        if n > MinimalLinkRule+1: # we cant create more link than node so in the beginning the max n of link = n of node
+            # once there are enough node, add a random number contained between two border
             NumberOfLink = random.randint(MinimalLinkRule, MaximalLinkRule)
-            for i in range(0,NumberOfLink-2):
+            for i in range(0,NumberOfLink-2): # add the choosen number of link
                 StartNodeIndex = n-1
-                EndNodeIndex = random.choice(nodeList)
-                print(nodeList)
-                nodeList.remove(EndNodeIndex)
+                EndNodeIndex = random.choice(nodeList) # connect to a random node accros the graph
+                nodeList.remove(EndNodeIndex) # ensure we double link a node by removing it from the drafting pool
                 G.add_edge(*(str(StartNodeIndex), str(EndNodeIndex)))
         else:
-            print("Adding link between firsts node")
             for i in range(0, n-1):
                 StartNodeIndex = n-1
                 EndNodeIndex = i
                 G.add_edge(*(str(StartNodeIndex), str(EndNodeIndex)))
 
 def SimulateLinkBetweeTwoNode(G):
-    print("hello")
+    hello = 1
 
 def main():
+    """
     G = nx.Graph()
     for i in range(0,10):
-        print("Iterations"+str(i))
         AddNodePlusRandomLink(G)
-
+    """
+    G = nx.hkn_harary_graph(17, 42)
     nx.draw(G, with_labels=True, font_weight="bold")
     plt.show()
+
     print("Done")
 
 if __name__== "__main__":
